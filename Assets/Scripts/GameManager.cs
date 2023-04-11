@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public TextMeshProUGUI textMeshPro;
     public GameObject[] bottles;
     public  Color[] colorsToSet;
 
@@ -28,17 +30,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         currLevelID = 1;
+        textMeshPro.SetText(" Level " + currLevelID);
         fullBottleCondition = 1;
         HandleGenerateStage();
     }
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.N)) 
-        {
-            GameManager.Instance.UpdateGameState(GameState.NextStage);
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -52,12 +50,14 @@ public class GameManager : MonoBehaviour
                 {
                     if (firstBottle == null)
                     {
+                        hit.collider.GetComponent<Transform>().DOMove(hit.collider.transform.position + new Vector3(0, 0.2f, 0), 0.5f).SetEase(Ease.OutQuint);
                         firstBottle = hit.collider.GetComponent<BottleController>();
                     }
                     else
                     {
                         if (firstBottle == hit.collider.GetComponent<BottleController>())
                         {
+                            hit.collider.GetComponent<Transform>().DOMove(hit.collider.transform.position + new Vector3(0, -0.2f, 0), 0.5f).SetEase(Ease.OutQuint);
                             firstBottle = null;
                         }
 
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
     
     public IEnumerator MoveToNextStage()
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(1.5f);
         GameManager.Instance.UpdateGameState(GameManager.GameState.NextStage);
         
     }
@@ -143,6 +143,7 @@ public class GameManager : MonoBehaviour
             }      
         }
         currLevelID += 1;
+        textMeshPro.SetText(" Level " + currLevelID);
         Debug.Log(currLevelID);
         GameManager.Instance.UpdateGameState(GameState.GenerateStage);
     }    

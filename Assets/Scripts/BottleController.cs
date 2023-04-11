@@ -11,14 +11,13 @@ public class BottleController : MonoBehaviour
     public SpriteRenderer bottleMaskSR;
     public AudioSource pourSound;
     public AudioSource fullSound;
+    public AudioSource winSound;
 
     public float timeToRotate = 1f;
 
     public AnimationCurve scaleAndRotationMultiplierCurve;
     public AnimationCurve fillAmountCurve;
     public AnimationCurve rotationMultiplierCurve;
-
-    [Range(0, 4)]
   
     public float[] fillAmounts;
     public float[] rotationValues;
@@ -26,6 +25,7 @@ public class BottleController : MonoBehaviour
     private int rotationIndex = 0;
 
     public int colorsToTransfer = 0;
+    [Range(0, 4)]
     public int colorsInBottle = 0;
     public Color topColor;
     public int topColorLayers = 0;
@@ -37,6 +37,8 @@ public class BottleController : MonoBehaviour
 
     private Transform chosenRotation;
     private float directionMultiplier = 1.0f;
+    private bool isPouring = false;
+
     public bool fullColorStack = false;
 
     private Vector3 originalPosition;
@@ -131,6 +133,7 @@ public class BottleController : MonoBehaviour
 
         if (GameManager.Instance.CheckWinCondition())
         {
+            winSound.Play();
             StartCoroutine(GameManager.Instance.MoveToNextStage());
         }
     }
@@ -166,12 +169,10 @@ public class BottleController : MonoBehaviour
 
                     lineRenderer.enabled = true;
                 }
-
                 bottleMaskSR.material.SetFloat("_FillAmount", fillAmountCurve.Evaluate(angleValue));
                 bottleControllerRef.FillUp(fillAmountCurve.Evaluate(lastAngleValue) - fillAmountCurve.Evaluate(angleValue));
-
             }
-            time += Time.deltaTime*rotationMultiplierCurve.Evaluate(angleValue);
+            time += Time.deltaTime * rotationMultiplierCurve.Evaluate(angleValue);
             lastAngleValue = angleValue;
             yield return new WaitForEndOfFrame();
         }
