@@ -13,6 +13,8 @@ public class BottleController : MonoBehaviour
     public AudioSource fullSound;
     public AudioSource winSound;
 
+    public ParticleSystem particleSystem;
+
     public float timeToRotate = 1f;
 
     public AnimationCurve scaleAndRotationMultiplierCurve;
@@ -37,7 +39,6 @@ public class BottleController : MonoBehaviour
 
     private Transform chosenRotation;
     private float directionMultiplier = 1.0f;
-    private bool isPouring = false;
 
     public bool fullColorStack = false;
 
@@ -106,7 +107,7 @@ public class BottleController : MonoBehaviour
         while (t < 1)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, t);
-            t += Time.deltaTime * 2;
+            t += Time.deltaTime * 3.5f;
             yield return new WaitForEndOfFrame();
         }
         transform.position = endPosition;
@@ -189,11 +190,12 @@ public class BottleController : MonoBehaviour
         if (bottleControllerRef.topColorLayers == 4)
         {
             fullSound.PlayDelayed(1f);
+            bottleControllerRef.particleSystem.Play();
             bottleControllerRef.GetComponent<Collider2D>().enabled = false;
             bottleControllerRef.fullColorStack = true;
         }
 
-        this.bottleControllerRef = null;
+        bottleControllerRef = null;
 
         lineRenderer.enabled = false;
 
