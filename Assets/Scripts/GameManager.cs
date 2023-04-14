@@ -160,6 +160,7 @@ public class GameManager : MonoBehaviour
                 bottles[0].GetComponent<BottleController>().bottleColors[0] = colorsToSet[0];
                 bottles[0].GetComponent<BottleController>().bottleColors[1] = colorsToSet[0];
                 bottles[0].GetComponent<BottleController>().UpdateBottleState();
+                bottles[0].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[0].SetActive(true);    
                     
@@ -167,6 +168,7 @@ public class GameManager : MonoBehaviour
                 bottles[1].GetComponent<BottleController>().bottleColors[0] = colorsToSet[0];
                 bottles[1].GetComponent<BottleController>().bottleColors[1] = colorsToSet[0];
                 bottles[1].GetComponent<BottleController>().UpdateBottleState();
+                bottles[1].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
 
                 bottles[1].SetActive(true);
@@ -181,6 +183,7 @@ public class GameManager : MonoBehaviour
                 bottles[0].GetComponent<BottleController>().bottleColors[1] = colorsToSet[1];
                 bottles[0].GetComponent<BottleController>().bottleColors[2] = colorsToSet[0];
                 bottles[0].GetComponent<BottleController>().UpdateBottleState();
+                bottles[0].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[0].SetActive(true);
 
@@ -190,6 +193,7 @@ public class GameManager : MonoBehaviour
                 bottles[1].GetComponent<BottleController>().bottleColors[1] = colorsToSet[0];
                 bottles[1].GetComponent<BottleController>().bottleColors[2] = colorsToSet[0];
                 bottles[1].GetComponent<BottleController>().UpdateBottleState();
+                bottles[1].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[1].SetActive(true);
 
@@ -198,6 +202,7 @@ public class GameManager : MonoBehaviour
                 bottles[2].GetComponent<BottleController>().bottleColors[0] = colorsToSet[1];
                 bottles[2].GetComponent<BottleController>().bottleColors[1] = colorsToSet[1];
                 bottles[2].GetComponent<BottleController>().UpdateBottleState();
+                bottles[2].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[2].SetActive(true);
                 break;
@@ -212,6 +217,7 @@ public class GameManager : MonoBehaviour
                 bottles[0].GetComponent<BottleController>().bottleColors[2] = colorsToSet[1];
                 bottles[0].GetComponent<BottleController>().bottleColors[3] = colorsToSet[0];
                 bottles[0].GetComponent<BottleController>().UpdateBottleState();
+                bottles[0].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[0].SetActive(true);
 
@@ -222,6 +228,7 @@ public class GameManager : MonoBehaviour
                 bottles[1].GetComponent<BottleController>().bottleColors[2] = colorsToSet[2];
                 bottles[1].GetComponent<BottleController>().bottleColors[3] = colorsToSet[2];
                 bottles[1].GetComponent<BottleController>().UpdateBottleState();
+                bottles[1].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[1].SetActive(true);
 
@@ -231,13 +238,16 @@ public class GameManager : MonoBehaviour
                 bottles[2].GetComponent<BottleController>().bottleColors[2] = colorsToSet[0];
                 bottles[2].GetComponent<BottleController>().bottleColors[3] = colorsToSet[0];
                 bottles[2].GetComponent<BottleController>().UpdateBottleState();
+                bottles[2].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[2].SetActive(true);
 
                 bottles[3].GetComponent<BottleController>().UpdateBottleState();
+                bottles[3].GetComponent<BottleController>().UpdateWavePositionAndScale();
                 bottles[3].SetActive(true);
 
                 bottles[4].GetComponent<BottleController>().UpdateBottleState();
+                bottles[4].GetComponent<BottleController>().UpdateWavePositionAndScale();
                 bottles[4].SetActive(true);
 
                 break;
@@ -250,6 +260,7 @@ public class GameManager : MonoBehaviour
                 bottles[0].GetComponent<BottleController>().bottleColors[2] = colorsToSet[2];
                 bottles[0].GetComponent<BottleController>().bottleColors[3] = colorsToSet[1];
                 bottles[0].GetComponent<BottleController>().UpdateBottleState();
+                bottles[0].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[0].SetActive(true);
 
@@ -259,6 +270,7 @@ public class GameManager : MonoBehaviour
                 bottles[1].GetComponent<BottleController>().bottleColors[2] = colorsToSet[2];
                 bottles[1].GetComponent<BottleController>().bottleColors[3] = colorsToSet[3];
                 bottles[1].GetComponent<BottleController>().UpdateBottleState();
+                bottles[1].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[1].SetActive(true);
 
@@ -268,13 +280,16 @@ public class GameManager : MonoBehaviour
                 bottles[2].GetComponent<BottleController>().bottleColors[2] = colorsToSet[1];
                 bottles[2].GetComponent<BottleController>().bottleColors[3] = colorsToSet[1];
                 bottles[2].GetComponent<BottleController>().UpdateBottleState();
+                bottles[2].GetComponent<BottleController>().UpdateWavePositionAndScale();
 
                 bottles[2].SetActive(true);
 
                 bottles[3].GetComponent<BottleController>().UpdateBottleState();
+                bottles[3].GetComponent<BottleController>().UpdateWavePositionAndScale();
                 bottles[3].SetActive(true);
 
                 bottles[4].GetComponent<BottleController>().UpdateBottleState();
+                bottles[4].GetComponent<BottleController>().UpdateWavePositionAndScale();
                 bottles[4].SetActive(true);
                 break;
         }
