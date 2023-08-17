@@ -100,18 +100,14 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RippleSpeed: 1
     - _SampleGI: 0
     - _ScaleRotation: 1
     - _ScaleRotationMultiply: 1
-    - _ScrollXSpeed: 2
-    - _ScrollYSpeed: 2
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _WaveSpeed: 0.1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -127,8 +123,6 @@ Material:
     - _Color04: {r: 1, g: 0.4563492, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FillAmount: {r: 0, g: 0, b: 0, a: 0}
-    - _MainTint: {r: 1, g: 1, b: 1, a: 1}
-    - _RippleColor: {r: 0.02346823, g: 6.219203, b: 5.579874, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2229635577630990047

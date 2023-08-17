@@ -2,22 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BottleController : MonoBehaviour
 {
-    public SpriteRenderer wave;
-    public Transform waveRotation;
+    private const int _MAXCOLOR = 4;
 
     public Color[] bottleColors;
-    public Color topColor;
-    public BottleController bottleControllerRef;
     public SpriteRenderer bottleMaskSR;
     public AudioSource pourSound;
     public AudioSource fullSound;
     public AudioSource winSound;
 
     public ParticleSystem particleSystem;
+
+    public float timeToRotate = 1f;
 
     public AnimationCurve scaleAndRotationMultiplierCurve;
     public AnimationCurve fillAmountCurve;
@@ -26,22 +24,23 @@ public class BottleController : MonoBehaviour
     public float[] fillAmounts;
     public float[] rotationValues;
 
+    private int rotationIndex = 0;
+
     public int colorsToTransfer = 0;
     [Range(0, 4)]
     public int colorsInBottle = 0;
+    public Color topColor;
     public int topColorLayers = 0;
-    public float timeToRotate = 1f;
-    public bool fullColorStack = false;
-    public bool justThisBottle;
+ 
+    public BottleController bottleControllerRef;
 
     public Transform leftRotationPoint;
     public Transform rightRotationPoint;
 
     private Transform chosenRotation;
     private float directionMultiplier = 1.0f;
-    private int rotationIndex = 0;
 
-    private const int _MAXCOLOR = 4;
+    public bool fullColorStack = false;
 
     private Vector3 originalPosition;
     private Vector3 startPosition;
@@ -52,7 +51,6 @@ public class BottleController : MonoBehaviour
     void Start()
     {
         UpdateBottleState();
-        UpdateWavePositionAndScale();
         originalPosition = transform.position;
 
     }
@@ -62,60 +60,6 @@ public class BottleController : MonoBehaviour
         bottleMaskSR.material.SetFloat("_FillAmount", fillAmounts[colorsInBottle]);
         UpdateColorOnShader();
         UpdateTopColorValues();
-    }
-
-    public void UpdateWavePositionAndScale()
-    {
-
-        if (topColorLayers >= 3)
-        {
-            wave.transform.localScale = new Vector3(1, 1.5f, 1);
-            wave.transform.position = new Vector3(-1.5f, 0, 0);
-            wave.color = topColor;
-        }
-
-        else if (topColorLayers == 2)
-        {
-            wave.transform.localScale = new Vector3(0.86f, 1.5f, 1);
-            wave.color = topColor;
-            if (colorsInBottle < 4)
-            {
-                wave.transform.position = new Vector3(-1.5f, -0.5f, 0);
-            }
-            else
-            {
-                wave.transform.position = new Vector3(-1.5f, 0, 0);
-            }
-        }
-            
-        else
-        {
-            wave.color = topColor;
-            switch (colorsInBottle)
-            {
-                case 4:
-                    wave.color = topColor;
-                    wave.transform.localScale = new Vector3(1, 1.5f, 1);
-                    wave.transform.position = new Vector3(-1.5f, 0, 0);
-                    break;
-                case 3:
-                    wave.color = topColor;
-                    wave.transform.localScale = new Vector3(0.86f, 1.5f, 1);
-                    wave.transform.position = new Vector3(-1.5f, 0, 0);
-                    break;
-                case 2:
-                    wave.color = topColor;
-                    wave.transform.localScale = new Vector3(0.48f, 1.5f, 1);
-                    wave.transform.position = new Vector3(-1.5f, -0.5f, 0);
-                    break;
-                case 1:
-                    wave.color = topColor;
-                    wave.transform.localScale = new Vector3(0.48f, 1.5f, 1);
-                    wave.transform.position = new Vector3(-1.5f, -1f, 0);
-                    break;
-            }
-        }    
-        
     }
 
     public void TransferColors()
@@ -153,8 +97,6 @@ public class BottleController : MonoBehaviour
         if (chosenRotation == leftRotationPoint)
         {
             endPosition = bottleControllerRef.rightRotationPoint.position;
-            wave.transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 270);
-            wave.transform.position += new Vector3(2, 0, 0);
         }
         else
         {
@@ -165,16 +107,6 @@ public class BottleController : MonoBehaviour
         while (t < 1)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, t);
-
-            if (chosenRotation == leftRotationPoint)
-            {
-                wave.transform.position = transform.position + new Vector3(1.5f, -0.4f, 0);
-            }
-
-            else
-            {
-                wave.transform.position = transform.position + new Vector3(-1.5f, -0.4f, 0);
-            }    
             t += Time.deltaTime * 3.5f;
             yield return new WaitForEndOfFrame();
         }
@@ -192,17 +124,6 @@ public class BottleController : MonoBehaviour
         while (t < 1)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, t);
-
-            if (chosenRotation == leftRotationPoint)
-            {
-                wave.transform.position = transform.position + new Vector3(1.5f, -0.4f, 0);
-            }
-
-            else
-            {
-                wave.transform.position = transform.position + new Vector3(-1.5f, -0.4f, 0);
-            }
-
             t += Time.deltaTime * 2;
             yield return new WaitForEndOfFrame();
         }
@@ -210,7 +131,7 @@ public class BottleController : MonoBehaviour
 
         transform.GetComponent<SpriteRenderer>().sortingOrder -= 2;
         bottleMaskSR.sortingOrder -= 2;
-      
+
         if (GameManager.Instance.CheckWinCondition())
         {
             winSound.Play();
@@ -234,15 +155,7 @@ public class BottleController : MonoBehaviour
             //transform.eulerAngles = new Vector3(0, 0, angleValue);
 
             transform.RotateAround(chosenRotation.position, Vector3.forward, lastAngleValue - angleValue);
-            if (chosenRotation == leftRotationPoint)
-            {
-                wave.transform.RotateAround(waveRotation.position, new Vector3(0, 0, 1), (0.015f));
-            }
-            else
-            {
-                wave.transform.RotateAround(waveRotation.position, new Vector3(0, 0, 1), -(0.015f));
-            }
- 
+
             bottleMaskSR.material.SetFloat("_ScaleRotation", scaleAndRotationMultiplierCurve.Evaluate(angleValue));
 
             if (fillAmounts[colorsInBottle] > fillAmountCurve.Evaluate(angleValue) + 0.05f)
@@ -260,7 +173,6 @@ public class BottleController : MonoBehaviour
                 bottleMaskSR.material.SetFloat("_FillAmount", fillAmountCurve.Evaluate(angleValue));
                 bottleControllerRef.FillUp(fillAmountCurve.Evaluate(lastAngleValue) - fillAmountCurve.Evaluate(angleValue));
             }
-            wave.GetComponent<SpriteRenderer>().enabled = true;
             time += Time.deltaTime * rotationMultiplierCurve.Evaluate(angleValue);
             lastAngleValue = angleValue;
             yield return new WaitForEndOfFrame();
@@ -270,8 +182,6 @@ public class BottleController : MonoBehaviour
         //transform.eulerAngles = new Vector3(0, 0, angleValue);
         bottleMaskSR.material.SetFloat("_ScaleRotation", scaleAndRotationMultiplierCurve.Evaluate(angleValue));
         bottleMaskSR.material.SetFloat("_FillAmount", fillAmountCurve.Evaluate(angleValue));
-
-        wave.GetComponent<SpriteRenderer>().enabled = false;
 
         colorsInBottle -= colorsToTransfer;
         bottleControllerRef.colorsInBottle += colorsToTransfer;
@@ -284,6 +194,9 @@ public class BottleController : MonoBehaviour
             bottleControllerRef.GetComponent<Collider2D>().enabled = false;
             bottleControllerRef.fullColorStack = true;
         }
+
+        bottleControllerRef = null;
+
         lineRenderer.enabled = false;
 
         StartCoroutine(RotateBottleBack());
@@ -301,16 +214,7 @@ public class BottleController : MonoBehaviour
             lerpValue = time / timeToRotate;
             angleValue = Mathf.Lerp( directionMultiplier * rotationValues[rotationIndex], 0f, lerpValue);
 
-            // transform.eulerAngles = new Vector3(0, 0, angleValue);
-
-            if (chosenRotation == leftRotationPoint)
-            {
-                wave.transform.RotateAround(waveRotation.position, new Vector3(0, 0, 1), -(0.025f));
-            }
-            else
-            {
-                wave.transform.RotateAround(waveRotation.position, new Vector3(0, 0, 1), (0.025f));
-            }
+           // transform.eulerAngles = new Vector3(0, 0, angleValue);
 
             transform.RotateAround(chosenRotation.position, Vector3.forward, lastAngleValue - angleValue);
             bottleMaskSR.material.SetFloat("_ScaleRotation", scaleAndRotationMultiplierCurve.Evaluate(angleValue));
@@ -322,12 +226,6 @@ public class BottleController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         UpdateTopColorValues();
-
-        UpdateWavePositionAndScale();
-        bottleControllerRef.UpdateWavePositionAndScale();
-
-        bottleControllerRef = null;
-
         angleValue = 0f;
         transform.eulerAngles = new Vector3(0, 0, angleValue);
         bottleMaskSR.material.SetFloat("_ScaleRotation", scaleAndRotationMultiplierCurve.Evaluate(angleValue));
